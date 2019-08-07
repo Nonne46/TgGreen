@@ -1,9 +1,11 @@
 /client/proc/reestablish_db_connection()
 	set category = "Special Verbs"
 	set name = "Reestablish DB Connection"
-	if (!config.sql_enabled)
-		usr << "<span class='adminnotice'>The Database is not enabled!</span>"
-		return
+	if (!config.sql_enabled) //Костыль, ну и ладно
+		var/reconnect = alert("The Database is not enabled!", "The Database is not enabled!", "Enable", "Cancel")
+		if (reconnect != "Enable")
+			return
+		config.sql_enabled = 1
 
 	if (dbcon && dbcon.IsConnected())
 		if (!check_rights(R_DEBUG,0))
